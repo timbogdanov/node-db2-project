@@ -8,7 +8,16 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:id', (req, res) => {});
+router.get('/:id', (req, res) => {
+  db('cars')
+    .where({ id: req.params.id })
+    .then((car) => {
+      res.status(200).json(car);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 
 router.post('/', (req, res) => {
   db('cars')
@@ -18,6 +27,24 @@ router.post('/', (req, res) => {
     })
     .catch((error) => {
       console.log(error);
+    });
+});
+
+router.delete('/:id', (req, res) => {
+  db('cars')
+    .where({ id: req.params.id })
+    .del()
+    .then((car) => {
+      res.status(200).json({ message: 'deleted record' });
+    });
+});
+
+router.put('/:id', (req, res) => {
+  db('cars')
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then((car) => {
+      res.status(200).json({ message: 'updated record' });
     });
 });
 
